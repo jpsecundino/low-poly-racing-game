@@ -8,22 +8,16 @@ public class Player : MonoBehaviour
 
     public int id;
     public GameObject car;
-    [HideInInspector] public int pos;
     public int actualLap;
     public int nextCheckpoint;
-    [HideInInspector] public string bestTimeLap;
+    [HideInInspector] public MyTime bestTimeLap;
 
     // Start is called before the first frame update
     void Start()
     {
         nextCheckpoint = 0;
         actualLap = 0;
-        bestTimeLap = "00:00:00";
+        bestTimeLap = new MyTime(10,10,0);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

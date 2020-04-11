@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RaceManager : MonoBehaviour
 {
@@ -10,23 +12,50 @@ public class RaceManager : MonoBehaviour
 
     public int numberCheckpoints;
     public int numberLaps;
-    public int raceTime;
+
+    public LapTimeDisplayManager lapTimeManager;
+    //public LapTimeDisplayManager againstTheClockManager;
+    public LapDisplayManager lapManager;
+
     public List<Player> playersList;
     private Dictionary<int, Player> colliderToPlayer;
-
-
+   
+    
     private void Start()
     {
-        Checkpoint.OnCheckpointEntered += Checkpoint_OnCheckpointEntered;
+        registerEvents();
+        LinkCollidersToPlayers();
 
+    }
+
+    private void LinkCollidersToPlayers()
+    {
         colliderToPlayer = new Dictionary<int, Player>();
-        foreach(Player p in playersList)
+        foreach (Player p in playersList)
         {
             BoxCollider carCollider = p.car.GetComponentInChildren<BoxCollider>();
             colliderToPlayer[carCollider.GetHashCode()] = p;
-           
+
         }
     }
+
+    private void registerEvents()
+    {
+        Checkpoint.OnCheckpointEntered += Checkpoint_OnCheckpointEntered;
+        LapTimeDisplayManager.OnTimerEnd += LapTimeManager_OnTimerEnd;
+        LapTimeDisplayManager.OnTimerStart += LapTimeManager_OnTimerStart;
+    }
+
+    private void LapTimeManager_OnTimerEnd(LapTimeDisplayManager ltm)
+    {
+        FinishRace();
+    }
+
+    private void LapTimeManager_OnTimerStart(LapTimeDisplayManager ltm)
+    {
+
+    }
+
 
     private void Checkpoint_OnCheckpointEntered( int checkpointID, Collider carBodyCollider )
     {
@@ -50,27 +79,42 @@ public class RaceManager : MonoBehaviour
 
     private void FinishLinePass(Player player)
     {
+  
         if (player.actualLap == 0)
         {
             player.actualLap++;
         }
         else
         {
-            CalculateLapTime(player);
+            //CalculateLapTime(player);
             player.actualLap++;
+            
+            lapManager.IncreaseActualLap();
+            
+            if(calculateBestTime(player))
+                lapTimeManager.updateBestTime(player.bestTimeLap);
+            
+            lapTimeManager.RestartTimer();
         }
 
         if (player.actualLap > numberLaps) FinishRace();
 
     }
 
-    private void CalculateLapTime(Player player)
+    private bool calculateBestTime(Player player)
     {
-        //player.bestTimeLap = 
+        if (player.bestTimeLap.CompareTo(lapTimeManager.curTime) > 0)
+        {
+            player.bestTimeLap = lapTimeManager.curTime;
+            return true;
+        }
+
+        return false;
+
     }
 
-
     private void FinishRace() { }
+   
     private Player GetPlayerByCollider(Collider carBodyCollider)
     {
         int _carObjectHash = carBodyCollider.GetHashCode();
