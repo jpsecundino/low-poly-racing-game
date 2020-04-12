@@ -10,22 +10,44 @@ public class RaceManager : MonoBehaviour
     //calculate the player position
     //if is the last/start checkpoint and it's not the race beginning, calculate player's laptime
 
+
     public int numberCheckpoints;
     public int numberLaps;
-
-    public LapTimeDisplayManager lapTimeManager;
-    //public LapTimeDisplayManager againstTheClockManager;
+    public TimerDisplayManager timeManager;
     public LapDisplayManager lapManager;
+    public int gameMode;
+    public string timeTrial = "01:50:00";
 
     public List<Player> playersList;
     private Dictionary<int, Player> colliderToPlayer;
-   
+
+    public GameObject wonScreen;
+    public GameObject lostScreen;
     
     private void Start()
     {
         registerEvents();
         LinkCollidersToPlayers();
+        SetTimer();
+        SetLaps();
+    }
 
+    private void SetTimer()
+    {
+        timeManager.increasing = false;
+        timeManager.SetTime(new MyTime(timeTrial));
+    }
+
+    private void SetLaps()
+    {
+        lapManager.SetTotalLap(numberLaps);
+        lapManager.SetCurLap(1);
+    }
+
+    private void registerEvents()
+    {
+        Checkpoint.OnCheckpointEntered += Checkpoint_OnCheckpointEntered;
+        TimerDisplayManager.OnTimerEnd += TimerDisplayManager_OnTimerEnd;
     }
 
     private void LinkCollidersToPlayers()
@@ -35,27 +57,13 @@ public class RaceManager : MonoBehaviour
         {
             BoxCollider carCollider = p.car.GetComponentInChildren<BoxCollider>();
             colliderToPlayer[carCollider.GetHashCode()] = p;
-
         }
     }
 
-    private void registerEvents()
+    private void TimerDisplayManager_OnTimerEnd()
     {
-        Checkpoint.OnCheckpointEntered += Checkpoint_OnCheckpointEntered;
-        LapTimeDisplayManager.OnTimerEnd += LapTimeManager_OnTimerEnd;
-        LapTimeDisplayManager.OnTimerStart += LapTimeManager_OnTimerStart;
+        PlayerLostRace();
     }
-
-    private void LapTimeManager_OnTimerEnd(LapTimeDisplayManager ltm)
-    {
-        FinishRace();
-    }
-
-    private void LapTimeManager_OnTimerStart(LapTimeDisplayManager ltm)
-    {
-
-    }
-
 
     private void Checkpoint_OnCheckpointEntered( int checkpointID, Collider carBodyCollider )
     {
@@ -86,34 +94,62 @@ public class RaceManager : MonoBehaviour
         }
         else
         {
-            //CalculateLapTime(player);
             player.actualLap++;
             
+            if (player.actualLap > numberLaps) PlayerWonRace(player);
+            
             lapManager.IncreaseActualLap();
+
+            if (calculateBestTime(player))
+            {
+              //  timeManager.updateBestTime(player.bestTimeLap);  this will be activated if another mode get implemented or a for new visual for HUD
+            }
             
-            if(calculateBestTime(player))
-                lapTimeManager.updateBestTime(player.bestTimeLap);
-            
-            lapTimeManager.RestartTimer();
+            timeManager.RestartTimer();
         }
 
-        if (player.actualLap > numberLaps) FinishRace();
 
     }
 
     private bool calculateBestTime(Player player)
     {
-        if (player.bestTimeLap.CompareTo(lapTimeManager.curTime) > 0)
+        if (player.bestTimeLap.CompareTo(timeManager.curTime) > 0)
         {
-            player.bestTimeLap = lapTimeManager.curTime;
+            player.bestTimeLap = timeManager.curTime;
+            Debug.Log(player.bestTimeLap.ToString());
             return true;
+
         }
 
         return false;
 
     }
 
-    private void FinishRace() { }
+    private void PlayerLostRace()
+    {
+        foreach(Player p in playersList)
+        {
+            p.car.GetComponent<SimpleCarController>().enabled = false;
+        }
+
+        lapManager.DisableDisplay();
+        timeManager.DisableDisplay();
+        lostScreen.SetActive(true);
+
+    }
+
+    private void PlayerWonRace(Player player) {
+
+        Debug.Log("Jogador venceu na corrida contra o tempo");      
+
+        player.car.GetComponent<SimpleCarController>().enabled = false;
+
+        lapManager.DisableDisplay();
+        timeManager.DisableDisplay();
+        wonScreen.transform.Find("TimeQuantityText").GetComponent<Text>().text = timeManager.curTime.ToString();
+        //wonScreen.transform.FindChild("BestTimeQuantityText").GetComponent<Text>().text = player.bestTimeLap.ToString();
+        wonScreen.SetActive(true);
+    }
    
     private Player GetPlayerByCollider(Collider carBodyCollider)
     {

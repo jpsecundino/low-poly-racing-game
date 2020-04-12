@@ -15,13 +15,14 @@ public class AxleInfo
 }
 
 
-[RequireComponent(typeof(InputManager))] 
+[RequireComponent(typeof(PlayerInput))] 
 [RequireComponent(typeof(Rigidbody))]
 public class SimpleCarController : MonoBehaviour
 {
-    public InputManager input;
+    public PlayerInput input;
     private float m_steeringAngle;
     public float maxSterrAngle = 30;
+    public float maxSpeed = 200f;
     public float motorForce = 1000;
     public float breakStrength;
 
@@ -32,7 +33,8 @@ public class SimpleCarController : MonoBehaviour
     public Transform carCenterOfMass;
 
     private void Start()
-    {
+    { 
+     
         UpdateCenterOfMass();
     }
 
@@ -98,6 +100,13 @@ public class SimpleCarController : MonoBehaviour
             }
 
         }
+
+        if (carRigidBody.velocity.magnitude > maxSpeed)
+        {
+            carRigidBody.velocity = carRigidBody.velocity.normalized * maxSpeed;
+        }
+
+        Debug.Log(carRigidBody.velocity.magnitude);
     }
 
 

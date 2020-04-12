@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 
     public int id;
     public GameObject car;
+    public CameraFollow myCamera;
     public int actualLap;
     public int nextCheckpoint;
     [HideInInspector] public MyTime bestTimeLap;
@@ -18,6 +19,8 @@ public class Player : MonoBehaviour
         nextCheckpoint = 0;
         actualLap = 0;
         bestTimeLap = new MyTime(10,10,0);
+
+        //myCamera.Setup(() => car.transform.position);
     }
 
 }

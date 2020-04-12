@@ -15,12 +15,12 @@ public class MyTime : IComparable
         MilliCount = 0;
     }
 
-    public MyTime(String[] initTime)
+    public MyTime(String s)
     {
-
-        MilliCount = float.Parse(initTime[2]);
-        SecondCount = int.Parse(initTime[1]);
-        MinuteCount = int.Parse(initTime[0]);
+        string[] _initTime = s.Split(':'); 
+        MilliCount = float.Parse(_initTime[2]);
+        SecondCount = int.Parse(_initTime[1]);
+        MinuteCount = int.Parse(_initTime[0]);
         
     }
 
@@ -34,7 +34,16 @@ public class MyTime : IComparable
 
     public override string ToString()
     {
-        return "" + MinuteCount + ":" + SecondCount + ":" + MilliCount;
+        return "" + MinuteCount + "\"" + SecondCount + "\'" + (int) MilliCount + ".";
+    }
+
+    public bool Equals(MyTime otherTime)
+    {
+        bool minEq = MinuteCount.Equals(otherTime.MinuteCount);
+        bool secEq = SecondCount.Equals(otherTime.MinuteCount);
+        bool milliEq = MilliCount.Equals(otherTime.MinuteCount);
+
+        return minEq && secEq && milliEq;
     }
 
     // -1 if this < otherTime, 0 if its equal, 1 otherwise
@@ -68,5 +77,14 @@ public class MyTime : IComparable
                 return minCmp;
             }
         }
+    }
+
+    public static bool isZeroed(MyTime time)
+    {
+        bool milliZeroed = (int) time.MilliCount * 10 == 0;
+        bool secondZeroed = time.SecondCount == 0;
+        bool minZeroed = time.MinuteCount == 0;
+
+        return milliZeroed && secondZeroed && minZeroed;
     }
 }

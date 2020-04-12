@@ -5,17 +5,12 @@ using UnityEngine.UI;
 
 public class LapDisplayManager : MonoBehaviour
 {
-    public int totalLaps = 0;
-    public int curLap = 0;
+    private int totalLaps = 0;
+    private int curLap = 0;
 
+    public GameObject lapPanel; 
     public GameObject curLapDisplay;
     public GameObject totalLapDisplay;
-
-    private void Start()
-    {
-        curLapDisplay.GetComponent<Text>().text = "" + curLap;
-        totalLapDisplay.GetComponent<Text>().text = "" + totalLaps;
-    }
 
     public void IncreaseActualLap()
     {
@@ -23,4 +18,25 @@ public class LapDisplayManager : MonoBehaviour
         curLapDisplay.GetComponent<Text>().text = "" + curLap;
     }
 
+    public void SetTotalLap(int _laps)
+    {
+        totalLaps = _laps;
+        totalLapDisplay.GetComponent<Text>().text = "" + _laps;
+    }
+
+    public void SetCurLap(int _curLap)
+    {
+        curLap = _curLap;
+        curLapDisplay.GetComponent<Text>().text = "" + curLap;
+    }
+
+    public void DisableDisplay()
+    {
+        lapPanel.SetActive(false);
+    }
+
+    public void EnableDisplays()
+    {
+        lapPanel.SetActive(true);
+    }
 }
