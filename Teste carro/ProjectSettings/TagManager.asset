@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Checkpoint
   - Waypoints
+  - StartPoint
+  - CameraPoints
   layers:
   - Default
   - TransparentFX

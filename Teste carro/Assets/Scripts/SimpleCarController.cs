@@ -25,6 +25,7 @@ public class SimpleCarController : MonoBehaviour
     public float maxSpeed = 200f;
     public float motorForce = 1000;
     public float breakStrength;
+    public string traction = "4x2 Rear";
 
     public List<AxleInfo> axleInfos;
 
@@ -105,8 +106,6 @@ public class SimpleCarController : MonoBehaviour
         {
             carRigidBody.velocity = carRigidBody.velocity.normalized * maxSpeed;
         }
-
-        Debug.Log(carRigidBody.velocity.magnitude);
     }
 
 

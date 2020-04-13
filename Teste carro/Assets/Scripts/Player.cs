@@ -8,7 +8,6 @@ public class Player : MonoBehaviour
 
     public int id;
     public GameObject car;
-    public CameraFollow myCamera;
     public int actualLap;
     public int nextCheckpoint;
     [HideInInspector] public MyTime bestTimeLap;

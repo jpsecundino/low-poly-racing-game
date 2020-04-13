@@ -307,6 +307,7 @@ MonoBehaviour:
   maxSpeed: 20
   motorForce: 1500
   breakStrength: 9e+10
+  traction: 4X2 Front
   axleInfos:
   - leftWheelCollider: {fileID: 7536531241763350857}
     leftWheelTransf: {fileID: 7537042039730314612}
