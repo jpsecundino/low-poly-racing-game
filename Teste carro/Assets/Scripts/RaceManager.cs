@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RaceManager : MonoBehaviour
@@ -16,6 +17,7 @@ public class RaceManager : MonoBehaviour
     public TimerDisplayManager timeManager;
     public LapDisplayManager lapManager;
     public int gameMode;
+    private bool gameIsPaused = false;
 
     public GameObject[] cars;
 
@@ -27,14 +29,46 @@ public class RaceManager : MonoBehaviour
 
     public GameObject wonScreen;
     public GameObject lostScreen;
-    
-    private void Start()
+    public GameObject pauseScreen;
+    public GameObject endScreen;
+
+    void Start()
     {
         registerEvents();
         PutPlayersOnMap();
         LinkCollidersToPlayers();        
         SetDifficulty();
+        Resume();
 
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (gameIsPaused)
+            {
+                Resume() ;
+            }
+            else
+            {
+                Pause();
+            }
+        }
+    }
+
+    public void Pause()
+    {
+        pauseScreen.SetActive(true);
+        Time.timeScale = 0f;
+        gameIsPaused = true;
+    }
+
+    public void Resume()
+    {
+        pauseScreen.SetActive(false);
+        Time.timeScale = 1f;
+        gameIsPaused = false;
     }
 
     private void SetDifficulty()
@@ -43,10 +77,10 @@ public class RaceManager : MonoBehaviour
         
         switch (GameInfo.Instance.actualDifficulty)
         {
-            case (int) GameInfo.Difficulty.easy:
-                SetTimer(diffSettings.easy.totalTime, false);
-                SetLaps(diffSettings.easy.numLaps);
-                break;
+          //  case (int) GameInfo.Difficulty.easy:
+              //  SetTimer(diffSettings.easy.totalTime, false);
+             //   SetLaps(diffSettings.easy.numLaps);
+          //      break;
             case (int) GameInfo.Difficulty.medium:
                 SetTimer(diffSettings.medium.totalTime, false);
                 SetLaps(diffSettings.medium.numLaps);
@@ -57,7 +91,7 @@ public class RaceManager : MonoBehaviour
                 break;
             default:
                 Debug.LogWarning("No difficulty found, setting to default: easy");
-                SetTimer(diffSettings.easy.totalTime, false);
+                SetTimer(new MyTime(0,5,0), false);
                 SetLaps(diffSettings.easy.numLaps);
                 break;
         }
@@ -152,20 +186,6 @@ public class RaceManager : MonoBehaviour
 
     }
 
-    private bool calculateBestTime( Player _player )
-    {
-        if (_player.bestTimeLap.CompareTo(timeManager.curTime) > 0)
-        {
-            _player.bestTimeLap = timeManager.curTime;
-            Debug.Log(_player.bestTimeLap.ToString());
-            return true;
-
-        }
-
-        return false;
-
-    }
-
     private void PlayerLostRace()
     {
         foreach(Player p in playersList)
@@ -202,10 +222,25 @@ public class RaceManager : MonoBehaviour
     }
 
 
-    private void calculatePlayerPosition(Player player)
-    {
-
+    public void GoMainMenu()
+    {   
+        SceneManager.LoadScene("Menu", LoadSceneMode.Single);
     }
 
+    public void GoChangeCarAndDifficulty()
+    {
+        SceneManager.LoadScene("ChooseCar", LoadSceneMode.Single);
+    }
 
+    public void RestartRace()
+    {
+        SceneManager.LoadScene("Game", LoadSceneMode.Single);
+    }
+
+    public void GoEndScreen()
+    {
+        wonScreen.SetActive(false);
+        lostScreen.SetActive(false);
+        endScreen.SetActive(true);
+    }
 }
