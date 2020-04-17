@@ -16,8 +16,7 @@ public class SelectionManager : MonoBehaviour
     public GameObject chooseDifficultPanel;
 
 
-    public Camera chooseCamera;
-    public float smoothedSpeed = 0.125f;
+    public SimpleCameraController chooseCamera;
     public Transform[] cameraPoints;
 
     public GameObject[] cars;
@@ -28,17 +27,15 @@ public class SelectionManager : MonoBehaviour
         hard
     };
 
-
-
     private int actualCar;
 
     // Start is called before the first frame update
     void Start()
     {
         actualCar = 0;
-
         FocusOnCar(actualCar);
     }
+
     void LateUpdate()
     {
         FocusOnCar(actualCar);
@@ -46,16 +43,8 @@ public class SelectionManager : MonoBehaviour
 
     private void FocusOnCar(int carID)
     {
-        MoveCameraTo(carID);
+        chooseCamera.objectiveTranf = cameraPoints[carID];
         WriteStats(carID);
-    }
-
-    private void MoveCameraTo(int carID)
-    {
-        Vector3 desiredPositon = cameraPoints[carID].position;
-        Vector3 smoothedPosition = Vector3.Lerp(chooseCamera.transform.position, desiredPositon, smoothedSpeed);
-        chooseCamera.transform.position = smoothedPosition;
-
     }
 
     private void WriteStats(int carID)

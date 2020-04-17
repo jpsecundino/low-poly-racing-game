@@ -16,6 +16,7 @@ public class Checkpoint : MonoBehaviour
         //if a player entered checkpoint
         if (carCollider.CompareTag("Player"))
         {
+            if (OnCheckpointEntered != null)
             {
                 OnCheckpointEntered(checkpointId, carCollider);
             }

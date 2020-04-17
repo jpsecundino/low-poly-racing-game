@@ -16,23 +16,24 @@ public class RaceManager : MonoBehaviour
     public int numberOfLaps;
     public TimerDisplayManager timeManager;
     public LapDisplayManager lapManager;
-    public int gameMode;
     private bool gameIsPaused = false;
     private bool gameplayActive = true;
 
-    public GameObject[] cars;
 
-    public Player player;
     
     private Dictionary<int, Player> colliderToPlayer;
 
     public Transform startingPoint;
+    public SimpleCameraController raceCameraController;
 
     public static event Action OnLost;
     public static event Action OnWon;
     public static event Action OnPause;
     public static event Action OnResume;
 
+    public Player player;
+    public GameObject[] cars;
+    public GameObject[] checkPoints;
     public GameObject wonScreen;
     public GameObject lostScreen;
     public GameObject pauseScreen;
@@ -66,7 +67,14 @@ public class RaceManager : MonoBehaviour
                 OnPause();
             }
         }
+
+ //       if(Input.GetKeyDown(KeyCode.R) && gameplayActive && !gameIsPaused)
+   //     {
+     //       player.car.GetComponent<Rigidbody>().velocity = -player.car.GetComponent<Rigidbody>().velocity;
+       //     player.car.transform.position = checkPoints[player.nextCheckpoint - 1].transform.position;
+        //}
     }
+    
     private void OnDestroy()
     {
         UnregisterEvents();   
@@ -140,7 +148,6 @@ public class RaceManager : MonoBehaviour
         OnLost();
     }
     
-    
     private void PutPlayersOnMap()
     {
         int _carSelected = GameInfo.Instance.carSelected;
@@ -148,6 +155,7 @@ public class RaceManager : MonoBehaviour
         GameObject _car = Instantiate(cars[_carSelected], startingPoint.transform.position, startingPoint.rotation);
         player.car = _car;
         _car.transform.parent = player.transform;
+        raceCameraController.objectiveTranf = _car.transform;
 
     }
     

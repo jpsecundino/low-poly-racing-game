@@ -5127,8 +5127,7 @@ MonoBehaviour:
   tracDisplay: {fileID: 568462084}
   chooseCarPanel: {fileID: 1467081721}
   chooseDifficultPanel: {fileID: 44122132}
-  chooseCamera: {fileID: 923626792}
-  smoothedSpeed: 0.125
+  chooseCamera: {fileID: 923626794}
   cameraPoints:
   - {fileID: 1543062002}
   - {fileID: 1547316525}
@@ -8259,6 +8258,7 @@ GameObject:
   - component: {fileID: 923626793}
   - component: {fileID: 923626792}
   - component: {fileID: 923626791}
+  - component: {fileID: 923626794}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -8331,6 +8331,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 25, y: -74.5, z: 0.009000001}
+--- !u!114 &923626794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923626790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4250b6615de2e4185673569282891f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectiveTranf: {fileID: 0}
+  smoothedSpeed: 0.125
+  xOffset: 0
+  zOffset: 0
+  yOffset: 0
+  changeCameraX: 1
+  changeCameraY: 1
+  changeCameraZ: 1
 --- !u!1001 &934775357
 PrefabInstance:
   m_ObjectHideFlags: 0
