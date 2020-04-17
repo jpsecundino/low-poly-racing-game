@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 5069215653823576064}
   m_Layer: 0
   m_Name: Car3
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -189,10 +189,10 @@ GameObject:
   - component: {fileID: 5066696351869615391}
   - component: {fileID: 5055563609237124539}
   - component: {fileID: 5047169310529688691}
-  - component: {fileID: 5069236174980967286}
+  - component: {fileID: 8828470294118020699}
   m_Layer: 0
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -258,8 +258,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &5069236174980967286
-MeshCollider:
+--- !u!65 &8828470294118020699
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -268,10 +268,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 7f4f24cb528cb884a874e5266f87c831, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 1.2121654, y: 0.9667099, z: 3.9843357}
+  m_Center: {x: 0, y: 0.6712438, z: 0}
 --- !u!1 &5069690759686910661
 GameObject:
   m_ObjectHideFlags: 0

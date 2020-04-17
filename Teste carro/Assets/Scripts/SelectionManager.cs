@@ -8,16 +8,27 @@ using UnityEngine.SceneManagement;
 
 public class SelectionManager : MonoBehaviour
 {
-
     public TMPro.TextMeshProUGUI speedDisplay;
     public TMPro.TextMeshProUGUI torqueDisplay;
     public TMPro.TextMeshProUGUI tracDisplay;
+
+    public GameObject chooseCarPanel;
+    public GameObject chooseDifficultPanel;
+
 
     public Camera chooseCamera;
     public float smoothedSpeed = 0.125f;
     public Transform[] cameraPoints;
 
     public GameObject[] cars;
+    private enum difficulty
+    {
+        easy,
+        medium,
+        hard
+    };
+
+
 
     private int actualCar;
 
@@ -26,20 +37,20 @@ public class SelectionManager : MonoBehaviour
     {
         actualCar = 0;
 
-        focusOnCar(actualCar);
+        FocusOnCar(actualCar);
     }
     void LateUpdate()
     {
-        focusOnCar(actualCar);
+        FocusOnCar(actualCar);
     }
 
-    private void focusOnCar(int carID)
+    private void FocusOnCar(int carID)
     {
-        moveCameraTo(carID);
-        writeStats(carID);
+        MoveCameraTo(carID);
+        WriteStats(carID);
     }
 
-    private void moveCameraTo(int carID)
+    private void MoveCameraTo(int carID)
     {
         Vector3 desiredPositon = cameraPoints[carID].position;
         Vector3 smoothedPosition = Vector3.Lerp(chooseCamera.transform.position, desiredPositon, smoothedSpeed);
@@ -47,7 +58,7 @@ public class SelectionManager : MonoBehaviour
 
     }
 
-    private void writeStats(int carID)
+    private void WriteStats(int carID)
     {
         SimpleCarController simpleCarController = cars[carID].GetComponent<SimpleCarController>();
         speedDisplay.text ="Max speed: " + simpleCarController.maxSpeed.ToString();
@@ -56,12 +67,12 @@ public class SelectionManager : MonoBehaviour
 
     }
 
-    public void nextCar() 
+    public void NextCar() 
     {
         actualCar = (actualCar + 1) % cars.Length;
     }
 
-    public void prevCar()
+    public void PrevCar()
     {
         if(actualCar - 1 < 0)
         {
@@ -73,12 +84,49 @@ public class SelectionManager : MonoBehaviour
         }
     }
 
-    public void nextScene()
+    public void SelectCar()
+    {
+        GameInfo.Instance.carSelected = actualCar;
+        ActivateChooseDifficultyPanel();
+    }
+
+    public void ActivateChooseDifficultyPanel()
+    {
+        chooseCarPanel.SetActive(false);
+        chooseDifficultPanel.SetActive(true);
+    }
+
+    public void ActivateChooseCarPanel()
+    {
+        chooseCarPanel.SetActive(true);
+        chooseDifficultPanel.SetActive(false);
+    }
+
+    public void SelectDifficulty(Button b)
+    {
+        
+        switch (b.gameObject.name)
+        {
+            case "EasyButton":
+                GameInfo.Instance.actualDifficulty = (int) difficulty.easy;
+                break;
+            case "MedButton":
+                GameInfo.Instance.actualDifficulty = (int) difficulty.medium;
+                break;
+            case "HardButton":
+                GameInfo.Instance.actualDifficulty = (int) difficulty.hard;
+                break;
+        }
+
+        NextScene();
+    }
+
+    public void NextScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
-    public void prevScene()
+    public void BackToMenu()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }

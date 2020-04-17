@@ -13,9 +13,12 @@ public class Checkpoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider carCollider)
     {
+        Debug.Log("collider ok");
+        Debug.Log(carCollider.tag);
         //if a player entered checkpoint
         if (carCollider.CompareTag("Player"))
         {
+            Debug.Log("tag ok");
             if (OnCheckpointEntered != null)
             {
                 OnCheckpointEntered(checkpointId, carCollider);

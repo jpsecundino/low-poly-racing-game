@@ -12,14 +12,18 @@ public class RaceManager : MonoBehaviour
 
 
     public int numberCheckpoints;
-    public int numberLaps;
+    public int numberOfLaps;
     public TimerDisplayManager timeManager;
     public LapDisplayManager lapManager;
     public int gameMode;
-    public string timeTrial = "01:50:00";
+
+    public GameObject[] cars;
 
     public List<Player> playersList;
+    
     private Dictionary<int, Player> colliderToPlayer;
+
+    public Transform startingPoint;
 
     public GameObject wonScreen;
     public GameObject lostScreen;
@@ -27,20 +31,60 @@ public class RaceManager : MonoBehaviour
     private void Start()
     {
         registerEvents();
-        LinkCollidersToPlayers();
-        SetTimer();
-        SetLaps();
+        PutPlayersOnMap();
+        LinkCollidersToPlayers();        
+        SetDifficulty();
+
     }
 
-    private void SetTimer()
+    private void SetDifficulty()
     {
-        timeManager.increasing = false;
-        timeManager.SetTime(new MyTime(timeTrial));
+        GameInfo.DifficultySet diffSettings = GameInfo.difficultySettings;
+        
+        switch (GameInfo.Instance.actualDifficulty)
+        {
+            case (int) GameInfo.Difficulty.easy:
+                SetTimer(diffSettings.easy.totalTime, false);
+                SetLaps(diffSettings.easy.numLaps);
+                break;
+            case (int) GameInfo.Difficulty.medium:
+                SetTimer(diffSettings.medium.totalTime, false);
+                SetLaps(diffSettings.medium.numLaps);
+                break;
+            case (int) GameInfo.Difficulty.hard:
+                SetTimer(diffSettings.hard.totalTime, false);
+                SetLaps(diffSettings.hard.numLaps);
+                break;
+            default:
+                Debug.LogWarning("No difficulty found, setting to default: easy");
+                SetTimer(diffSettings.easy.totalTime, false);
+                SetLaps(diffSettings.easy.numLaps);
+                break;
+        }
+        
     }
 
-    private void SetLaps()
+    private void PutPlayersOnMap()
     {
-        lapManager.SetTotalLap(numberLaps);
+        int _carSelected = GameInfo.Instance.carSelected;
+
+        GameObject _car = Instantiate(cars[_carSelected], startingPoint.transform.position, startingPoint.rotation);
+        //fixed player because we only have 1
+        playersList[0].car = _car;
+        _car.transform.parent = playersList[0].transform;
+
+    }
+
+    private void SetTimer( MyTime t, bool increasing )
+    {
+        timeManager.increasing = increasing;
+        timeManager.SetTime( t );
+    }
+
+    private void SetLaps( int _numberLaps )
+    {
+        numberOfLaps = _numberLaps;
+        lapManager.SetTotalLap( _numberLaps );
         lapManager.SetCurLap(1);
     }
 
@@ -65,58 +109,55 @@ public class RaceManager : MonoBehaviour
         PlayerLostRace();
     }
 
-    private void Checkpoint_OnCheckpointEntered( int checkpointID, Collider carBodyCollider )
+    private void Checkpoint_OnCheckpointEntered( int _checkpointID, Collider _carBodyCollider )
     {
-        Player _curPlayer = GetPlayerByCollider( carBodyCollider );
+        Player _curPlayer = GetPlayerByCollider( _carBodyCollider );
+
+        //Debug.Log("entrei com o player " + ((_curPlayer == playersList[0]) ? "correto" : "errado"));
 
         if( _curPlayer == null )
         {
-            Debug.LogWarning("The player car collider " + carBodyCollider.GetHashCode() + " wasn't found.");
+            Debug.LogWarning("The player car collider " + _carBodyCollider.GetHashCode() + " wasn't found.");
             return;
         }
 
-        if( _curPlayer.nextCheckpoint == checkpointID )
+        if( _curPlayer.nextCheckpoint == _checkpointID )
         {
             //if the player passed by the start/finish line
-            if (checkpointID == 0) FinishLinePass(_curPlayer);
+            if (_checkpointID == 0) FinishLinePass(_curPlayer);
 
-            _curPlayer.nextCheckpoint = ( checkpointID + 1 ) % numberCheckpoints;
+            _curPlayer.nextCheckpoint = ( _checkpointID + 1 ) % numberCheckpoints;
         }
 
     }   
 
-    private void FinishLinePass(Player player)
+    private void FinishLinePass(Player _player)
     {
   
-        if (player.actualLap == 0)
+        if (_player.actualLap == 0)
         {
-            player.actualLap++;
+            _player.actualLap++;
         }
         else
         {
-            player.actualLap++;
+            _player.actualLap++;
             
-            if (player.actualLap > numberLaps) PlayerWonRace(player);
-            
-            lapManager.IncreaseActualLap();
+            if (_player.actualLap > numberOfLaps) PlayerWonRace(_player);
 
-            if (calculateBestTime(player))
-            {
-              //  timeManager.updateBestTime(player.bestTimeLap);  this will be activated if another mode get implemented or a for new visual for HUD
-            }
+            lapManager.IncreaseActualLap();
             
-            timeManager.RestartTimer();
+            //timeManager.RestartTimer();
         }
 
 
     }
 
-    private bool calculateBestTime(Player player)
+    private bool calculateBestTime( Player _player )
     {
-        if (player.bestTimeLap.CompareTo(timeManager.curTime) > 0)
+        if (_player.bestTimeLap.CompareTo(timeManager.curTime) > 0)
         {
-            player.bestTimeLap = timeManager.curTime;
-            Debug.Log(player.bestTimeLap.ToString());
+            _player.bestTimeLap = timeManager.curTime;
+            Debug.Log(_player.bestTimeLap.ToString());
             return true;
 
         }
