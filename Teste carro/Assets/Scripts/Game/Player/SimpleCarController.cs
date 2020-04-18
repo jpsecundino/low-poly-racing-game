@@ -34,8 +34,8 @@ public class SimpleCarController : MonoBehaviour
     public Transform carCenterOfMass;
 
     private void Start()
-    { 
-     
+    {
+        maxSpeed = maxSpeed / 10;
         UpdateCenterOfMass();
     }
 
@@ -44,7 +44,6 @@ public class SimpleCarController : MonoBehaviour
         Steer();
         Accelerate();
         UpdateWheelPoses();
-        Debug.Log(carRigidBody.velocity.magnitude);
     }
 
     private void UpdateCenterOfMass()
@@ -85,10 +84,10 @@ public class SimpleCarController : MonoBehaviour
 
                 if (input.brake)
                 {
-                    //axle.leftWheelCollider.motorTorque = 0;
+                    axle.leftWheelCollider.motorTorque = 0;
                     axle.leftWheelCollider.brakeTorque = breakStrength * Time.deltaTime;
                     
-                    //axle.rightWheelCollider.motorTorque = 0;
+                    axle.rightWheelCollider.motorTorque = 0;
                     axle.rightWheelCollider.brakeTorque = breakStrength * Time.deltaTime;
                 }
                 else

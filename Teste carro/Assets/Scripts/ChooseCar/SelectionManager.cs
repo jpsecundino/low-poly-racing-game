@@ -36,6 +36,22 @@ public class SelectionManager : MonoBehaviour
         FocusOnCar(actualCar);
     }
 
+    private void Update()
+    {
+        if (chooseCarPanel.activeSelf)
+        {
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                PrevCar();    
+            }
+        
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                NextCar();    
+            }
+        }
+    }
+
     void LateUpdate()
     {
         FocusOnCar(actualCar);

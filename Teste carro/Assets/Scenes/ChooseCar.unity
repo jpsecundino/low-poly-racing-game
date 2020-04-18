@@ -4543,10 +4543,10 @@ RectTransform:
   m_Father: {fileID: 44122133}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 262, y: 0}
-  m_SizeDelta: {x: 76.51, y: 30}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -157, y: 0}
+  m_SizeDelta: {x: 76.51001, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &469217783
 MonoBehaviour:
@@ -17234,9 +17234,9 @@ RectTransform:
   m_Father: {fileID: 44122133}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -240.66003, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 173, y: 0}
   m_SizeDelta: {x: 78.69, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1794661233
@@ -17513,7 +17513,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -25.5, y: -138}
+  m_AnchoredPosition: {x: -13, y: -138}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1815927509
@@ -22778,10 +22778,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   input: {fileID: 0}
   maxSterrAngle: 30
-  maxSpeed: 10
+  maxSpeed: 70
   motorForce: 500
   breakStrength: 90000
-  traction: 4x2 Rear
+  traction: 4x4
   axleInfos:
   - leftWheelCollider: {fileID: 3133113704459939444}
     leftWheelTransf: {fileID: 3034641449493222856}
@@ -23570,7 +23570,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   input: {fileID: 0}
   maxSterrAngle: 30
-  maxSpeed: 30
+  maxSpeed: 120
   motorForce: 2000
   breakStrength: 90000
   traction: 4x2 Rear
@@ -24224,10 +24224,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   input: {fileID: 0}
   maxSterrAngle: 30
-  maxSpeed: 20
+  maxSpeed: 100
   motorForce: 1500
   breakStrength: 9e+10
-  traction: 4x2 Rear
+  traction: 4x2 Front
   axleInfos:
   - leftWheelCollider: {fileID: 7536531241683485082}
     leftWheelTransf: {fileID: 7537042039801787815}

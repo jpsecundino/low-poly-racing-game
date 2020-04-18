@@ -226,12 +226,7 @@ public class RaceManager : MonoBehaviour
 
     public void RestartRace()
     {
-        Destroy(player.car);
-        PutPlayersOnMap();
-        LinkCollidersToPlayers();
-        SetDifficulty();
-        gameplayActive = true;
-        OnResume();
+        SceneManager.LoadScene("OffroadCliff");
     }
 
 }
