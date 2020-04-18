@@ -44,6 +44,7 @@ public class SimpleCarController : MonoBehaviour
         Steer();
         Accelerate();
         UpdateWheelPoses();
+        Debug.Log(carRigidBody.velocity.magnitude);
     }
 
     private void UpdateCenterOfMass()
