@@ -21,7 +21,7 @@ public class AutoControl : MonoBehaviour, InputManager
     // Update is called once per frame
     void Update()
     {
-        //problema ao coletar as posições dos waypoints: todas são 0,0,0
+        //problema ao coletar as posições dos waypoints: todas são 0,0,0 :(
         if(Vector3.Distance(waypoints[current].position, transform.position) < WPradius)
         {
             current = (current + 1) % waypoints.Length;

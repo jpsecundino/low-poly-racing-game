@@ -16,11 +16,6 @@ public class TrafficLight : MonoBehaviour
         poleRB.constraints = RigidbodyConstraints.FreezeAll;
     }
 
-    private void Start()
-    {
-        OnGreen();
-    }
-
     void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("Player"))

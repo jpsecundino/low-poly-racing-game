@@ -52,10 +52,10 @@ public class GameInfo
     private static void SetDifficultyParams()
     {
         //change here the difficulty's parameters
-        MyTime easyTime = new MyTime(4, 0, 0);
+        MyTime easyTime = new MyTime(3, 20, 0);
         int easyLaps = 3;
 
-        MyTime medTime = new MyTime(2, 30, 0);
+        MyTime medTime = new MyTime(2, 40, 0);
         int medLaps = 3;
         
         MyTime hardTime = new MyTime(2, 10, 0);
