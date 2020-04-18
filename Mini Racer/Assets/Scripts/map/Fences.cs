@@ -15,15 +15,13 @@ public class Fences : MonoBehaviour
     private void Awake()
     {
         fenceRB = GetComponent<Rigidbody>();
-        fenceRB.isKinematic = true;
-        fenceRB.mass = mass;
+        fenceRB.constraints = RigidbodyConstraints.FreezeAll;
     }
-
 
     void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.CompareTag("Player"))
-            fenceRB.isKinematic = false;
+        if (collision.collider.CompareTag("Player"))
+            fenceRB.constraints = RigidbodyConstraints.None;
     }
 
 }

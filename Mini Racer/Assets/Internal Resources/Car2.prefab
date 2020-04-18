@@ -426,7 +426,6 @@ GameObject:
   - component: {fileID: 3424759225636576855}
   - component: {fileID: 3424759225636576854}
   - component: {fileID: 3424759225636576852}
-  - component: {fileID: 3424759225636576853}
   m_Layer: 0
   m_Name: Car2
   m_TagString: Player
@@ -492,11 +491,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1831f8f3a7c2844aba557c82ee2a449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  input: {fileID: 3424759225636576853}
+  input: {fileID: 3424759225636576854}
   maxSterrAngle: 30
   maxSpeed: 120
   motorForce: 2000
-  breakStrength: 9000000
+  breakStrength: 90000
   traction: 4X2 Rear
   axleInfos:
   - leftWheelCollider: {fileID: 4378321611758954002}
@@ -513,18 +512,6 @@ MonoBehaviour:
     steering: 0
   carRigidBody: {fileID: 3424759225636576855}
   carCenterOfMass: {fileID: 4378321611673986329}
---- !u!114 &3424759225636576853
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3424759225636576850}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0269528e52604745aa0493d9b5e43bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4378321610015067206
 GameObject:
   m_ObjectHideFlags: 0

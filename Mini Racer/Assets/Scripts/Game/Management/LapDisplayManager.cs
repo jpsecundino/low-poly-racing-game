@@ -8,35 +8,33 @@ public class LapDisplayManager : MonoBehaviour
     private int totalLaps = 0;
     private int curLap = 0;
 
-    public GameObject lapPanel; 
-    public GameObject curLapDisplay;
-    public GameObject totalLapDisplay;
+    public Text lapText;
 
     public void IncreaseActualLap()
     {
         curLap++;
-        curLapDisplay.GetComponent<Text>().text = "" + curLap;
+        lapText.text = "Lap: " + curLap + "/" + totalLaps;  
     }
 
     public void SetTotalLap(int _laps)
     {
         totalLaps = _laps;
-        totalLapDisplay.GetComponent<Text>().text = "" + _laps;
+        lapText.text = "Lap: " + curLap + "/" + totalLaps;
     }
 
     public void SetCurLap(int _curLap)
     {
         curLap = _curLap;
-        curLapDisplay.GetComponent<Text>().text = "" + curLap;
+        lapText.text = "Lap: " + curLap + "/" + totalLaps;
     }
 
     public void DisableDisplay()
     {
-        lapPanel.SetActive(false);
+        lapText.enabled = false;
     }
 
     public void EnableDisplays()
     {
-        lapPanel.SetActive(true);
+        lapText.enabled = true;
     }
 }

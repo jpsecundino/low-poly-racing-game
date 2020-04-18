@@ -11,10 +11,10 @@ public class RaceScreensManager : MonoBehaviour
     public GameObject lostScreen;
     public GameObject endScreen;
     public GameObject pauseScreen;
-    public TimerDisplayManager timeManager;
+    public GameObject countdownScreen;
+
+    public RaceTimerDisplayManager timeManager;
     public LapDisplayManager lapManager;
-
-
 
     private void Awake()
     {
@@ -32,7 +32,9 @@ public class RaceScreensManager : MonoBehaviour
         RaceManager.OnLost += RaceManager_OnLost;
         RaceManager.OnPause += RaceManager_OnPause;
         RaceManager.OnResume += RaceManager_OnResume;
+        RaceTimerDisplayManager.OnTimerStart += RaceTimerDisplayManager_OnTimerStart;
     }
+
 
     private void UnregisterEvents()
     {
@@ -40,8 +42,14 @@ public class RaceScreensManager : MonoBehaviour
         RaceManager.OnLost -= RaceManager_OnLost;
         RaceManager.OnPause -= RaceManager_OnPause;
         RaceManager.OnResume -= RaceManager_OnResume;
+        RaceTimerDisplayManager.OnTimerStart -= RaceTimerDisplayManager_OnTimerStart;
     }
-    
+
+    private void RaceTimerDisplayManager_OnTimerStart()
+    {
+        countdownScreen.SetActive(false);
+    }
+
     public void RaceManager_OnWon()
     {
         lapManager.DisableDisplay();
@@ -62,6 +70,8 @@ public class RaceScreensManager : MonoBehaviour
         timeManager.DisableDisplay();
         lapManager.DisableDisplay();
         pauseScreen.SetActive(true);
+        countdownScreen.SetActive(false);   
+
         Time.timeScale = 0f;
     }
     
@@ -72,6 +82,8 @@ public class RaceScreensManager : MonoBehaviour
         timeManager.EnableDisplays();
         lapManager.EnableDisplays();
         Time.timeScale = 1f;
+        if (timeManager.isCountdownOn)
+            countdownScreen.SetActive(true);
     }
 
     public void EndSceen()
@@ -80,10 +92,5 @@ public class RaceScreensManager : MonoBehaviour
         lostScreen.SetActive(false);
         endScreen.SetActive(true);
     }
-
-
-
-
-
 
 }

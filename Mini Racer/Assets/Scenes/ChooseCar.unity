@@ -22778,7 +22778,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   input: {fileID: 0}
   maxSterrAngle: 30
-  maxSpeed: 70
+  maxSpeed: 90
   motorForce: 500
   breakStrength: 90000
   traction: 4x4
