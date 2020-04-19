@@ -170,8 +170,12 @@ public class RaceManager : MonoBehaviour
     private void PlayerLostRace()
     {
         player.car.GetComponent<SimpleCarController>().enabled = false;
-        gameplayIsActive = false;
-        OnLost();
+        
+        if (gameplayIsActive)
+        {
+            gameplayIsActive = false;
+            OnLost();
+        }
     }
     
     private void PutPlayersOnMap()
