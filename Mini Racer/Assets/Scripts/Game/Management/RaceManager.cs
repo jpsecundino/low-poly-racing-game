@@ -42,6 +42,7 @@ public class RaceManager : MonoBehaviour
     private void Awake()
     {
         registerEvents();
+        numberCheckpoints = checkPoints.Length;
     }
 
     void Start()
@@ -51,6 +52,7 @@ public class RaceManager : MonoBehaviour
         SetDifficulty();
         
         player.car.GetComponent<PlayerInput>().enabled = false;
+        gameplayIsActive = false;
         OnResume();
     }
 
@@ -62,7 +64,7 @@ public class RaceManager : MonoBehaviour
             if (gameIsPaused)
             {
                 gameIsPaused = false;
-                OnResume() ;
+                OnResume();
             }
             else
             {
@@ -71,25 +73,35 @@ public class RaceManager : MonoBehaviour
             }
         }
 
-        if(Input.GetKeyDown(KeyCode.R) && gameplayIsActive && !gameIsPaused)
+        if (Input.GetKeyDown(KeyCode.R) && gameplayIsActive && !gameIsPaused)
         {
             ResetLastCheckpoint();
 
+        }
+
+        IfPlayerOffMap();
+    }
+
+    private void IfPlayerOffMap()
+    {
+        if(player.car.transform.position.y < -10)
+        {
+            ResetLastCheckpoint();
         }
     }
 
     private void ResetLastCheckpoint()
     {
-        int _lastCheckpointIndex = player.nextCheckpoint - 1;
+
+        if (player.actualCheckpoint < 0) return;
+
+        Transform _lastCheckpoint = checkPoints[player.actualCheckpoint].transform;
         
-        if(_lastCheckpointIndex < 0)
-        {
-            _lastCheckpointIndex = checkPoints.Length - 1;
-        }
+        Rigidbody _carRigidBody = player.car.GetComponent<Rigidbody>();
+        
+        _carRigidBody.velocity = new Vector3(0, 0, 0);
+        _carRigidBody.angularVelocity = new Vector3(0, 0, 0);
 
-        Transform _lastCheckpoint = checkPoints[_lastCheckpointIndex].transform;
-
-        player.car.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         player.car.transform.position = _lastCheckpoint.position;
         player.car.transform.rotation = _lastCheckpoint.rotation;
     }
@@ -103,19 +115,20 @@ public class RaceManager : MonoBehaviour
     {
         Checkpoint.OnCheckpointEntered += Checkpoint_OnCheckpointEntered;
         RaceTimerDisplayManager.OnTimerEnd += PlayerLostRace;
-        RaceTimerDisplayManager.OnTimerStart += SetPlayerInputOn; 
+        RaceTimerDisplayManager.OnTimerStart += LetPlayerPlay; 
     }
 
-    public void SetPlayerInputOn()
+    public void LetPlayerPlay()
     {
         player.car.GetComponent<PlayerInput>().enabled = true;
+        gameplayIsActive = true;
     }
 
     private void UnregisterEvents()
     {
         Checkpoint.OnCheckpointEntered -= Checkpoint_OnCheckpointEntered;
         RaceTimerDisplayManager.OnTimerEnd -= PlayerLostRace;
-        RaceTimerDisplayManager.OnTimerStart -= SetPlayerInputOn;
+        RaceTimerDisplayManager.OnTimerStart -= LetPlayerPlay;
     }
     
     private void Checkpoint_OnCheckpointEntered( int _checkpointID, Collider _carBodyCollider )
@@ -128,12 +141,13 @@ public class RaceManager : MonoBehaviour
             return;
         }
 
-        if( _curPlayer.nextCheckpoint == _checkpointID )
+   
+        else if( (_curPlayer.actualCheckpoint + 1)%numberCheckpoints == _checkpointID )
         {
             //if the player passed by the start/finish line
             if (_checkpointID == 0) FinishLinePass(_curPlayer);
 
-            _curPlayer.nextCheckpoint = ( _checkpointID + 1 ) % numberCheckpoints;
+            _curPlayer.actualCheckpoint = _checkpointID;
         }
 
     }   

@@ -44,6 +44,7 @@ public class SimpleCarController : MonoBehaviour
         Steer();
         Accelerate();
         UpdateWheelPoses();
+
     }
 
     private void UpdateCenterOfMass()
@@ -75,7 +76,7 @@ public class SimpleCarController : MonoBehaviour
 
     private void Accelerate()
     {
-   
+        
         foreach (AxleInfo axle in axleInfos)
         {
 
